@@ -18,4 +18,27 @@ const createBlog = async (data) => {
     }
 };
 
-module.exports = { getAllBlogs, createBlog };
+const getBlogById = async (id) => {
+    try {
+        return await Blog.findByPk(id);
+    } catch (error) {
+        console.error(`Erreur lors de la récupération du blog avec l'ID ${id}:`, error.message);
+        throw error;
+    }
+};
+
+const deleteBlog = async (id) => {
+    try {
+        const blog = await Blog.findByPk(id);
+        if (blog) {
+            await blog.destroy();
+            return blog;
+        }
+        return null;
+    } catch (error) {
+        console.error(`Erreur lors de la suppression du blog avec l'ID ${id}:`, error.message);
+        throw error;
+    }
+};
+
+module.exports = { getAllBlogs, createBlog, getBlogById, deleteBlog };

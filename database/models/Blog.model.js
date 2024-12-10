@@ -11,7 +11,7 @@ const Blog = sequelize.define('Blog', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    isActive: {
+    isPublic: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     }
