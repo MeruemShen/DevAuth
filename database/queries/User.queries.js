@@ -39,23 +39,4 @@ const verifyToken = (token) => {
     }
 };
 
-
-// deconnexion
-// const logout = async (userId) => {
-//     try {
-//         // Invalidate the JWT tokens (implementation depends on your token storage strategy)
-//         // For example, you can use a blacklist to invalidate tokens
-//         // Here, we assume a simple in-memory blacklist for demonstration purposes
-//         const blacklistedTokens = [];
-//         blacklistedTokens.push(userId);
-//         return { message: 'Déconnexion réussie' };
-//     } catch (error) {
-//         console.error('Erreur lors de la déconnexion:', error.message);
-//         throw error;
-//     }
-// };
-
-// module.exports = { logout };
-
-
 module.exports = { signup, login, verifyToken };
