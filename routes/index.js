@@ -8,4 +8,7 @@ router.get('/api', (req, res) => {
 const blogRoutes = require('./blog.routes');
 router.use('/blog', blogRoutes); 
 
+const UserRoute = require('./User.routes');
+router.use('/User', UserRoute);
+
 module.exports = router;
