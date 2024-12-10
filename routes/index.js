@@ -9,6 +9,6 @@ const blogRoutes = require('./blog.routes');
 router.use('/blog', blogRoutes); 
 
 const UserRoute = require('./User.routes');
-router.use('/User', UserRoute);
+router.use('/user', UserRoute);
 
 module.exports = router;
