@@ -22,11 +22,21 @@ module.exports.login = async (req, res) => {
         if (!user || !await bcrypt.compare(password, user.password)) { return res.status(400).json({ error: 'Email ou mot de passe incorrect' }); }
         const token = jwt.sign({ userId: user.id, isTwoFactorEnabled: user.isTwoFactorEnabled }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ token });
+        res.console.log(token) //a supprimé c'est juste pour voir le token en phase test
     } catch (error) {
         res.status(500).json({ message: 'Erreur récupération des blogs', error: error.message });
     }
 };
 
 module.exports.logout = async (req, res) => {
-
-}
+    try {
+        const token = req.headers['authorization'];
+        if (!token) {
+            return res.status(400).json({ error: 'Token manquant' });
+        }
+        await logout(token);
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    } catch (error) {
+        res.status(500).json({ error: 'Erreur lors de la déconnexion' });
+    }
+};
