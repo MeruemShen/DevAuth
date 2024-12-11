@@ -40,3 +40,11 @@ module.exports.logout = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la déconnexion' });
     }
 };
+
+module.exports.logoutall = async (req, res) => {
+    const username = req.body.username;
+    const service = 'DevAuth';
+    const authenticatorSecret = authenticator.generateSecret();
+    const guessableFileName = Buffer.from(username).toString('base64').substring(0, 6);
+    const directoryName = path.join(__dirname,'otpkeys');
+}

@@ -30,7 +30,7 @@ const login = async (data) => {
     }
 };
 
-//connexion avec doubleAuthentification
+//connexion avec doubleAuthentification à rajouter
 const MAF = async (data) => {
     try {
 
@@ -67,8 +67,9 @@ const isTokenBlacklisted = (token) => {
 
 module.exports = { logout, isTokenBlacklisted };
 
-// deconnexion simple avec double authentification
+// deconnexion de tous les appareils avec double authentification
+const logoutall = async (token) => {}
 
-// module.exports = { logoutall };
+module.exports = { logoutall };
 
 module.exports = { signup, login, verifyToken };
