@@ -1,5 +1,6 @@
 const User = require('../models/User.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const signup = async (data) => {
     try {
@@ -29,6 +30,15 @@ const login = async (data) => {
     }
 };
 
+//connexion avec doubleAuthentification
+const MAF = async (data) => {
+    try {
+
+    }catch(error){
+
+    }
+}
+
 //vérification du jwt
 const verifyToken = (token) => {
     try {
@@ -39,17 +49,15 @@ const verifyToken = (token) => {
     }
 };
 
+//les tokens bannis
+const blacklistedTokens = [];
 
-// deconnexion et rajouter une verifcation a deux facteur pour tout déconnecter
-// const logout = async (userId) => {
-//     try {
-//         // Invalidate the JWT tokens (implementation depends on your token storage strategy)
-//         // For example, you can use a blacklist to invalidate tokens
-//         // Here, we assume a simple in-memory blacklist for demonstration purposes
-//         const blacklistedTokens = [];
-//         blacklistedTokens.push(userId);
-//         return { message: 'Déconnexion réussie' };
-//     } catch (error) {
+// deconnexion simple
+const logout = async (token) => {
+    try {
+        blacklistedTokens.push(token);
+        return { message: 'Déconnexion réussie' };
+     } catch (error) {
 //         console.error('Erreur lors de la déconnexion:', error.message);
 //         throw error;
 //     }
@@ -57,5 +65,8 @@ const verifyToken = (token) => {
 
 // module.exports = { logout };
 
+// deconnexion simple avec double authentification
+
+// module.exports = { logoutall };
 
 module.exports = { signup, login, verifyToken };

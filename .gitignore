@@ -1,3 +1,4 @@
 /node_modules
 # Ignorer le fichier .env
 .env
+/database.sqlite
