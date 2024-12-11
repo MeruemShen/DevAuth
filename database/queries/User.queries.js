@@ -49,21 +49,23 @@ const verifyToken = (token) => {
     }
 };
 
-//les tokens bannis
 const blacklistedTokens = [];
 
-// deconnexion simple
 const logout = async (token) => {
     try {
         blacklistedTokens.push(token);
         return { message: 'Déconnexion réussie' };
-     } catch (error) {
-//         console.error('Erreur lors de la déconnexion:', error.message);
-//         throw error;
-//     }
-// };
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion:', error.message);
+        throw error;
+    }
+};
 
-// module.exports = { logout };
+const isTokenBlacklisted = (token) => {
+    return blacklistedTokens.includes(token);
+};
+
+module.exports = { logout, isTokenBlacklisted };
 
 // deconnexion simple avec double authentification
 
