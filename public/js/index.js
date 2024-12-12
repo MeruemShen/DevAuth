@@ -14,7 +14,16 @@ async function loadNav() {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            if (!responseUser.ok) throw new Error('Erreur lors de la récupération de l\'utilisateur.');
+            if (!responseUser.ok) {
+                const errorData = await responseUser.json();
+                if (errorData.error === 'Token invalide ou expiré') {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html'; 
+                    return;
+                } else {
+                    throw new Error("Erreur lors de la récupération de l'utilisateur.");
+                }
+            }
             const user = await responseUser.json();
             
             const logoutLink = document.createElement('li');
