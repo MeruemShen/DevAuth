@@ -27,23 +27,10 @@ const getBlogById = async (id) => {
     }
 };
 
-const updateBlog = async (id, data, userId) => {
+const deleteBlog = async (id) => {
     try {
         const blog = await Blog.findByPk(id);
-        if (blog && blog.userId === userId) { 
-            return await blog.update(data);
-        }
-        return null;
-    } catch (error) {
-        console.error(`Erreur lors de la mise à jour du blog avec l'ID ${id}:`, error.message);
-        throw error;
-    }
-};
-
-const deleteBlog = async (id, userId) => {
-    try {
-        const blog = await Blog.findByPk(id);
-        if (blog && blog.userId === userId) { 
+        if (blog) {
             await blog.destroy();
             return blog;
         }
@@ -54,4 +41,4 @@ const deleteBlog = async (id, userId) => {
     }
 };
 
-module.exports = { getAllBlogs, createBlog, getBlogById, updateBlog, deleteBlog };
+module.exports = { getAllBlogs, createBlog, getBlogById, deleteBlog };

@@ -1,12 +1,10 @@
-const { createBlog, getBlogs, getBlogById, updateBlog, deleteBlog } = require("../controllers/blog.controllers");
-const UserMiddleware = require("../middlewares/User.middleware");
+const { createBlog, getBlogs, getBlogById, deleteBlog } = require("../controllers/blog.controllers");
 const express = require('express');
 const router = express.Router();
 
-router.post('/', UserMiddleware, createBlog);
+router.post('/', createBlog);
 router.get('/', getBlogs);
-router.get('/:id', getBlogById);
-router.put('/:id', UserMiddleware, updateBlog); 
-router.delete('/:id', UserMiddleware, deleteBlog); 
+router.get('/:id', getBlogById); 
+router.delete('/:id', deleteBlog);  
 
 module.exports = router;

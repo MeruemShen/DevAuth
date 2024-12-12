@@ -11,9 +11,9 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    isTwoFactorEnabled: {
+    DoubleFacteur: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
     }
 }, {
     timestamps: true,

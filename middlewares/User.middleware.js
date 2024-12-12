@@ -1,12 +1,7 @@
 const { verifyToken, isTokenBlacklisted } = require('../database/queries/User.queries');
 
 const UserMiddleware = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) {
-        return res.status(401).json({ error: 'Accès non autorisé, token manquant' });
-    }
-
-    const token = authHeader.split(' ')[1]; // Ensure correct token extraction
+    const token = req.headers['authorization'];
     if (!token) {
         return res.status(401).json({ error: 'Accès non autorisé, token manquant' });
     }

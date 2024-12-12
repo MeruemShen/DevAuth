@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../index');
-const User = require('./User.model');
 
 const Blog = sequelize.define('Blog', {
     title: {
@@ -15,15 +14,7 @@ const Blog = sequelize.define('Blog', {
     isPublic: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-    },
-    userId: { 
-        type: DataTypes.INTEGER,
-        references: {
-            model: User,
-            key: 'id',
-        },
-        allowNull: false,
-    },
+    }
 }, {
     timestamps: true, 
     toJSON: {
