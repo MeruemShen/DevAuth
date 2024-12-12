@@ -28,7 +28,16 @@ document.getElementById('createBlogForm').addEventListener('submit', async (even
             document.getElementById('createBlogForm').reset();
             setTimeout(() => window.location.href = '/blogs.html', 1000);
         } else {
-            document.getElementById('createBlogMessage').innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            if (data.require2fa) {
+                document.getElementById('createBlogMessage').innerHTML = `
+                    <div class="alert alert-warning">
+                        ${data.error}
+                        <br>
+                        <a href="/blogs.html" class="btn btn-primary mt-2">Configurer le 2FA</a>
+                    </div>`;
+            } else {
+                document.getElementById('createBlogMessage').innerHTML = `<div class="alert alert-danger">${data.error || 'Une erreur est survenue'}</div>`;
+            }
         }
     } catch (error) {
         console.error('Erreur lors de la création du blog:', error);
