@@ -27,7 +27,17 @@ const login = async (email, password) => {
 };
 
 const generateToken = (user) => {
-    return jwt.sign({ userId: user.id, isTwoFactorEnabled: user.isTwoFactorEnabled }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ userId: user.id, email: user.email, DoubleFacteur: user.DoubleFacteur }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
-module.exports = { signup, login, generateToken };
+const verifyToken = (token) => {
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        console.error('Erreur lors de la vérification du token:', error.message);
+        throw error;
+    }
+};
+
+
+module.exports = { signup, login, generateToken, verifyToken };

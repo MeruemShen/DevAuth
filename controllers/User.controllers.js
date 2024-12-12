@@ -16,6 +16,7 @@ module.exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await login(email, password);
+        console.log(user);
         const token = generateToken(user);
         res.status(200).json({ token });
     } catch (error) {
@@ -23,3 +24,4 @@ module.exports.login = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la connexion' });
     }
 };
+

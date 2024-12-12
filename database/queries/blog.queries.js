@@ -9,9 +9,8 @@ const getAllBlogs = async () => {
     }
 };
 
-const createBlog = async (data, userId) => {
+const createBlog = async (data) => {
     try {
-        data.userId = userId;  
         return await Blog.create(data); 
     } catch (error) {
         console.error('Erreur lors de la création du blog:', error.message);
