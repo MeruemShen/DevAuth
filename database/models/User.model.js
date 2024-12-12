@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
     },
     DoubleFacteur: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
     }
 }, {
     timestamps: true,
