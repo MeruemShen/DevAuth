@@ -15,6 +15,7 @@ const User = sequelize.define('User', {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     }
+    
 }, {
     timestamps: true,
     toJSON: {

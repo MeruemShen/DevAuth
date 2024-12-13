@@ -1,4 +1,5 @@
 const { verifyToken } = require('../database/queries/User.queries');
+const jwt = require('jsonwebtoken');
 
 const UserMiddleware = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -6,7 +7,7 @@ const UserMiddleware = (req, res, next) => {
         return res.status(401).json({ error: 'Accès non autorisé, token manquant' });
     }
 
-    const token = authHeader.split(' ')[1]; // Ensure correct token extraction
+    const token = authHeader.split(' ')[1]; 
     if (!token) {
         return res.status(401).json({ error: 'Accès non autorisé, token manquant' });
     }

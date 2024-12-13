@@ -25,3 +25,15 @@ module.exports.login = async (req, res) => {
     }
 };
 
+module.exports.logoutAllDevices = async (req, res) => {
+    try {
+        req.user.logoutAllAt = new Date(); // Met à jour la date de déconnexion globale
+        await req.user.save();
+
+        res.status(200).json({ message: 'Déconnecté de tous les appareils.' });
+    } catch (err) {
+        console.error('Erreur lors de la déconnexion :', err);
+        res.status(500).json({ error: 'Erreur interne du serveur.' });
+    }
+};
+
