@@ -1,29 +1,52 @@
 async function loadBlogs() {
     try {
+        const token = localStorage.getItem('token');
+        let currentUser = null;
+
+        if (token) {
+            const currentUserResponse = await fetch('/api/user/current_user', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (currentUserResponse.ok) {
+                currentUser = await currentUserResponse.json();
+            } else {
+                const errorData = await currentUserResponse.json();
+                if (errorData.error === 'Token invalide ou expiré') {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html'; 
+                    return;
+                } else {
+                    throw new Error('Erreur lors de la récupération de l\'utilisateur.');
+                }
+            }
+        }
+
         const response = await fetch('/api/blog');
         const blogs = await response.json();
-
-        console.log('Blogs récupérés :', blogs);
 
         const blogContainer = document.getElementById('blogContainer');
         blogContainer.innerHTML = '';
 
-        const publicBlogs = blogs.filter(blog => blog.isPublic);
-
-        publicBlogs.forEach(blog => {
-            const blogCard = `
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">${blog.title}</h5>
-                            <p class="card-text">${blog.content.substring(0, 100)}...</p>
-                            <a href="/blogPage.html?id=${blog.id}" class="btn btn-primary">Lire plus</a>
-                            <button class="btn btn-danger mt-2" onclick="deleteBlog(${blog.id})">Supprimer</button>
+        blogs.forEach(blog => {
+            const isOwner = currentUser && blog.userId === currentUser.id;
+            if (blog.isPublic || isOwner) {
+                const blogCard = `
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${blog.title}</h5>
+                                <p class="card-text">${blog.content.substring(0, 100)}...</p>
+                                <a href="/blogPage.html?id=${blog.id}" class="btn btn-primary">Lire plus</a>
+                                ${isOwner ? `<button class="btn btn-danger mt-2" onclick="deleteBlog(${blog.id})">Supprimer</button>` : ''}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-            blogContainer.innerHTML += blogCard;
+                `;
+                blogContainer.innerHTML += blogCard;
+            }
         });
 
     } catch (error) {
@@ -31,7 +54,6 @@ async function loadBlogs() {
     }
 }
 
-// Function to handle delete request
 async function deleteBlog(blogId) {
     const token = localStorage.getItem('token');
 
