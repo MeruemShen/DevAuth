@@ -14,7 +14,14 @@ const User = sequelize.define('User', {
     DoubleFacteur: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+    },GoogleId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },DiscordId: {
+        type: DataTypes.STRING,
+        allowNull: true,
     }
+
 }, {
     timestamps: true,
     toJSON: {
