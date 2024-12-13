@@ -2,7 +2,7 @@ const { authenticator } = require('otplib');
 const qrcode = require('qrcode');
 const fs = require('fs');
 const path = require('path');
-
+const User = require('../database/models/User.model'); 
 const otpDirectory = path.resolve('./otpkeys');
 
 // Crée le dossier otpkeys s'il n'existe pas
@@ -62,7 +62,6 @@ module.exports.generateQRCode = async (req, res) => {
     }
 };
 
-// Vérifier le code TOTP fourni par l'utilisateur
 module.exports.verifyTOTP = async (req, res) => {
     try {
         const { twoFactorCode } = req.body;
@@ -83,12 +82,19 @@ module.exports.verifyTOTP = async (req, res) => {
             return res.status(401).json({ error: 'Code 2FA invalide.' });
         }
 
-        res.status(200).json({ message: '2FA vérifié avec succès.' });
+        // Mettre à jour directement l'utilisateur dans la base de données
+        await User.update(
+            { DoubleFacteur: true }, // Champs à mettre à jour
+            { where: { email: username } } // Critère de recherche
+        );
+
+        res.status(200).json({ message: '2FA vérifié et activé avec succès.' });
     } catch (error) {
         console.error('Erreur lors de la vérification du 2FA :', error);
         res.status(500).json({ error: 'Erreur interne du serveur.' });
     }
 };
+
 
 // Afficher le QR code (génère un QR code si nécessaire)
 module.exports.displayQR = async (req, res) => {

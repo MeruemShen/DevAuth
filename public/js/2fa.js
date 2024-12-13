@@ -1,3 +1,32 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const response = await fetch('/api/user/current_user', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const currentUser = await response.json();
+
+            if (!currentUser.DoubleFacteur) {
+                document.getElementById('showQrCode').classList.remove('d-none');
+            }
+        } else {
+            const errorData = await response.json();
+            if (errorData.error === 'Token invalide ou expiré') {
+                localStorage.removeItem('token');
+                window.location.href = '/login.html';
+            }
+        }
+    } catch (error) {
+        console.error("Erreur lors de la vérification de l'état 2FA :", error);
+    }
+});
+
 document.getElementById('showQrCode').addEventListener('click', async () => {
     try {
         const token = localStorage.getItem('token');
@@ -19,8 +48,7 @@ document.getElementById('showQrCode').addEventListener('click', async () => {
 
         const data = await response.json();
         document.getElementById('modalQrCodeImage').src = data.qrCode;
-        
-        // Afficher la modale
+
         const qrCodeModal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
         qrCodeModal.show();
     } catch (error) {

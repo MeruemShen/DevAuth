@@ -3,7 +3,8 @@ const { getAllBlogs, createBlog, deleteBlog, getBlogById, updateBlog } = require
 module.exports.createBlog = async (req, res) => {
     try {
         const { title, content, isPublic } = req.body;
-        const userId = req.user.userId; // Extract userId from the middleware
+        const userId = req.user.id; 
+
 
         if (!title || !content || isPublic === undefined) {
             return res.status(400).json({ message: 'Champs manquants' });

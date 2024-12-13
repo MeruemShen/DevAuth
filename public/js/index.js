@@ -31,16 +31,17 @@ async function loadNav() {
             logoutLink.innerHTML = '<a class="btn btn-danger ms-2" href="#" onclick="logout()">Déconnexion</a>';
             navLinks.appendChild(logoutLink);
 
+            const logoutAllLink = document.createElement('li');
+            logoutAllLink.classList.add('nav-item');
+            logoutAllLink.innerHTML = '<a class="btn btn-warning ms-2" href="#" onclick="logoutAllDevices()">Déconnexion de tous les appareils</a>';
+            navLinks.appendChild(logoutAllLink);
+
             if (user.DoubleFacteur) {
 
                 const createButton = document.createElement('div');
                 createButton.innerHTML = '<a href="/create-blog.html" class="btn btn-success">Créer un Article</a>';
                 document.getElementById('createArticleButton').appendChild(createButton);
 
-                const accountLink = document.createElement('li');
-                accountLink.classList.add('nav-item');
-                accountLink.innerHTML = '<a class="btn btn-primary ms-2" href="/account.html">Mon Compte</a>';
-                navLinks.appendChild(accountLink);
             }
             
         } else {
@@ -63,6 +64,31 @@ async function loadNav() {
 function logout() {
     localStorage.removeItem('token'); 
     location.reload(); 
+}
+
+async function logoutAllDevices() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const response = await fetch('/api/user/logoutalldevices', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            localStorage.removeItem('token');
+            alert('Vous avez été déconnecté de tous les appareils.');
+            location.reload();
+        } else {
+            alert('Une erreur s\'est produite lors de la déconnexion de tous les appareils.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion de tous les appareils:', error);
+        alert('Une erreur s\'est produite lors de la déconnexion.');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', loadNav);

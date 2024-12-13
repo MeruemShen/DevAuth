@@ -10,7 +10,6 @@ const require2faMiddleware = async (req, res, next) => {
         const fileName = Buffer.from(username).toString('base64').substring(0, 6);
         const secretPath = path.join(otpDirectory, fileName);
 
-        // Vérifie si l'utilisateur a configuré le 2FA
         if (!fs.existsSync(secretPath)) {
             return res.status(403).json({ 
                 error: 'Vous devez configurer l\'authentification à deux facteurs pour créer un post.',

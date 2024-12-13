@@ -10,7 +10,7 @@
     <div id="nav-placeholder"></div>
 
     <section id="articles" class="py-5">
-<button id="showQrCode" class="nav-link" >Activer 2fa</button>
+        <button id="showQrCode" class="btn btn-primary d-none">Activer 2FA</button>
         <div class="container">
             <h2 class="text-center mb-4">Tous les Articles</h2>
             <div id="blogContainer" class="row"></div>
@@ -43,48 +43,6 @@
     <script src="./js/blogCard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="./js/index.js"></script>
-    <script src="./js/blogButton.js"></script>
     <script src="./js/2fa.js"></script>
-<script>
-
-document.getElementById('showQrCode').addEventListener('click', async () => {
-    try {
-        // Appelle l'API pour générer le QR code
-        const response = await fetch('http://localhost:4000/2fa/setup', {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-            },
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            alert(`Erreur : ${error.error}`);
-            return;
-        }
-
-        const data = await response.json();
-
-        // Affiche le QR code dans la modale
-        const qrCodeImage = document.getElementById('modalQrCodeImage');
-        qrCodeImage.src = data.qrCode;
-
-        // Ouvre la modale Bootstrap
-        const modal = new bootstrap.Modal(document.getElementById('qrCodeModal'));
-        modal.show();
-    } catch (error) {
-        console.error('Erreur lors de la récupération du QR code :', error);
-        alert('Une erreur est survenue. Veuillez réessayer.');
-    }
-});
-
-
-document.getElementById('closeModal').addEventListener('click', () => {
-    const modal = document.getElementById('qrCodeModal');
-    // Cache la modal
-    modal.classList.add('hidden');
-});
-
-</script>
 </body>
 </html>
